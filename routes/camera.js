@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var config = require('../config.js').camera
 var request = require('request')
+var async = require('async')
 /* GET users listing. */
 
 var cameraModuleUrl = config.base_url + ":" + config.port
@@ -13,7 +14,8 @@ router.get('/', function(req, res, next) {
 //API to trigger camera
 router.get('/trigger-camera', function(req, res, next)  {
     //TO-DO respond back with JSON
-    /*{
+    /*
+    {
         "module":"sensor",
         "timestamp":1486836445
     }
@@ -34,11 +36,24 @@ router.get('/trigger-camera', function(req, res, next)  {
             */
             var data = JSON.parse(body)
             //TO-DO store data in database
-            console.log("Response from Camera Module")
-            res.send("Recieved Response")
+            async.parallel([
+                function()  {
+                    console.log("Response from Camera Module")
+                },
+                function()  {
+                    res.send("Recieved Response")
+                }
+            ]);
+
         }else{
-            console.log("Error: " + response.statusCode)
-            res.send("Error in Camera Module")
+            async.parallel([
+                function()  {
+                    console.log("Error: " + response.statusCode)
+                },
+                function()  {
+                    res.send("Error in Camera Module")
+                }
+            ]);
         }
     })
 })
