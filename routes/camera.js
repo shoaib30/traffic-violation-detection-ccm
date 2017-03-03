@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var config = require('../config.js').camera
+var config = require('../config.js')
 var request = require('request')
 var async = require('async')
 /* GET users listing. */
 
-var cameraModuleUrl = config.base_url + ":" + config.port
-
+var cameraModuleUrl = config.camera.base_url + ":" + config.camera.port
+var imageProcessingUrl = config.image_processor.base_url + ":" + config.image_processor.port
 router.get('/', function(req, res, next) {
   res.send('Camera Communication API');
 });
@@ -38,7 +38,17 @@ router.get('/trigger-camera', function(req, res, next)  {
             //TO-DO store data in database
             async.parallel([
                 function()  {
-                    console.log("Response from Camera Module")
+                    console.log("Response from Camera Module: " + JSON.stringify(data))
+                    var url = imageProcessingUrl + "/process-number-plate?fileName=" + data.file_name
+                    //console.log("Processor at: " + imageProcessingUrl + "/process-number-plate?fileName=" + data.file_name)
+                    request(url, function (error, response, body){
+                        if(error){
+                            console.log("Error processing Image")
+                        }else if (!error && response.statusCode == 200) {
+                            var data = body
+                            console.log("Processed Image: " + data)
+                        }
+                    })
                 },
                 function()  {
                     res.send("Recieved Response")
