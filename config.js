@@ -2,6 +2,8 @@
 
 var config = {};
 
+config.uid = "node_001";
+
 config.camera = {};
 config.central_controller = {}
 config.image_processor = {}

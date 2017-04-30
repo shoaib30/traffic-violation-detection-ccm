@@ -17,7 +17,7 @@ var cameraModuleUrl = config.camera.base_url + ":" + config.camera.port
 var imageProcessingUrl = config.image_processor.base_url + ":" + config.image_processor.port
 var centralServerUrl = config.central_server.base_url + ":" + config.central_server.port
 var centralRequest = config.central_server.reqCred
-
+var uid = config.uid;
 router.get('/', function (req, res, next) {
     res.send('Camera Communication API');
 });
@@ -56,11 +56,15 @@ router.get('/trigger-camera', function (req, res, next) {
                         if (error) {
                             console.log("Error processing Image")
                         } else if (!error && response.statusCode == 200) {
-                            var data = body
-                            console.log("Processed Image: " + data)
-                            var serverUrl = centralServerUrl + "/api/node/posts"
+                            var numberPlate = body
+                            console.log("Processed Image: " + numberPlate)
+                            var serverUrl = centralServerUrl + "/api/node/data/setViolation"
                             var reqBody = JSON.parse(JSON.stringify(centralRequest));
-                            reqBody.numberPlate = data
+                            reqBody.payload = {}
+                            reqBody.payload.numberPlate = numberPlate;
+                            reqBody.payload.timeOfViolation = data.timestamp + "";
+                            reqBody.payload.uid = uid;
+                            console.log("URL:" + serverUrl + " REQ: " +JSON.stringify(reqBody))
                             request({
                                 'method': 'POST',
                                 'uri': serverUrl,
@@ -69,7 +73,7 @@ router.get('/trigger-camera', function (req, res, next) {
                                 if (err) {
                                     console.log("Error Communicating with central server")
                                 } else if (!err && response.statusCode == 200 ) {
-                                    console.log("Data sent to Central server")
+                                    console.log("Data sent to Central server: " + JSON.stringify(body))
                                 }
                             })
                         }
