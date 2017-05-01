@@ -15,7 +15,7 @@ var db = new sqlite3.Database('local-db.db', 'OPEN_READWRITE | OPEN_CREATE', fun
 
 var cameraModuleUrl = config.camera.base_url + ":" + config.camera.port
 var imageProcessingUrl = config.image_processor.base_url + ":" + config.image_processor.port
-var centralServerUrl = config.central_server.base_url + ":" + config.central_server.port
+var centralServerUrl = config.central_server.base_url// + ":" + config.central_server.port
 var centralRequest = config.central_server.reqCred
 var uid = config.uid;
 router.get('/', function (req, res, next) {
