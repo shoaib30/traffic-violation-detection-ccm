@@ -60,7 +60,7 @@ router.get('/trigger-camera', function (req, res, next) {
 
                             if (body == "error") {
                                 console.log("Could not identify number plate")
-                                var url = failedImageUrl + "/set_data?fileName=" + data.file_name + "&time=" + data.timestamp
+                                var url = failedImageUrl + "/set_data?fileName=" + data.file_name + ".jpg" + "&time=" + data.timestamp
                                 request(url, function (error, response, body) {
                                     if (error) {
                                         console.log("Error failing Image")
