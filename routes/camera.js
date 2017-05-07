@@ -111,4 +111,29 @@ router.get('/trigger-camera', function (req, res, next) {
     })
 })
 
+router.get("/send_failed_image", function (req, res) {
+
+    var numberPlate = req.query("number")
+    var time = req.query("time")
+    var serverUrl = centralServerUrl + "/api/node/data/setViolation"
+    var reqBody = JSON.parse(JSON.stringify(centralRequest));
+    reqBody.payload = {}
+    reqBody.payload.numberPlate = numberPlate;
+    reqBody.payload.timeOfViolation = time + "";
+    reqBody.payload.uid = uid;
+    console.log("URL:" + serverUrl + " REQ: " + JSON.stringify(reqBody))
+    request({
+        'method': 'POST',
+        'uri': serverUrl,
+        'json': reqBody
+    }, function (err, resp, body) {
+        if (err) {
+            console.log("Error Communicating with central server")
+        } else if (!err && response.statusCode == 200) {
+            console.log("Data sent to Central server: " + JSON.stringify(body))
+        }
+    })
+
+})
+
 module.exports = router;
