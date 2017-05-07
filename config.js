@@ -8,6 +8,7 @@ config.camera = {};
 config.central_controller = {}
 config.image_processor = {}
 config.central_server = {}
+config.failed_image = {}
 //defining camera module variables
 config.camera.base_url = "http://localhost"
 config.camera.port = "3001"
@@ -22,6 +23,7 @@ config.central_controller.apis = {}
 config.image_processor.base_url = "http://localhost"
 config.image_processor.port = "3002"
 
+config.failed_image.url="http://localhost:3004"
 
 config.central_server.base_url = "https://traffic-violation-detection-cc.run.aws-usw02-pr.ice.predix.io"
 config.central_server.port = "5000"
